@@ -1,0 +1,414 @@
+{% comment %}
+  {{ 'login-register.css' | asset_url | stylesheet_tag }}
+  {%- liquid
+    assign section_image = section.settings.section_image
+  -%}
+  {%- if section_image -%}
+    <div class="thb-login-page-wrapper">
+      {%- liquid
+        assign master_width = section_image.src.width | append: 'x' | append: section_image.src.height
+
+        render 'responsive-image', image: section_image, sizes: master_width
+      -%}
+  {%- endif -%}
+  <div class="row">
+    <div class="small-12 columns">
+      <div class="thb-form-container">
+        <div class="thb-register-form">
+          {% form 'create_customer', novalidate: 'novalidate' %}
+            <h4>{{ 'customer.login_page.create_account' | t }}</h4>
+            <p>{{ 'customer.login_page.create_account_description' | t }}</p>
+            {% if form.errors %}
+              <div class="form-notification error">
+                {% render 'svg-icons' with 'thb-error' %}
+                {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+            <div class="fields">
+              <div class="field">
+                <input
+                  type="text"
+                  name="customer[first_name]"
+                  class="full"
+                  value="{% if form.first_name %}{{ form.first_name }}{% endif %}"
+                  placeholder="{{ 'customer.login_page.first_name' | t }}"
+                >
+                <label for="first_name">{{ 'customer.login_page.first_name' | t }}</label>
+              </div>
+              <div class="field">
+                <input
+                  type="text"
+                  name="customer[last_name]"
+                  class="full"
+                  value="{% if form.last_name %}{{ form.last_name }}{% endif %}"
+                  placeholder="{{ 'customer.login_page.last_name' | t }}"
+                >
+                <label for="last_name">{{ 'customer.login_page.last_name' | t }}</label>
+              </div>
+            </div>
+            <div class="field">
+              <input
+                type="email"
+                name="customer[email]"
+                class="full {% if form.errors contains 'email' %}invalid{% endif %}"
+                value=""
+                placeholder="{{ 'customer.login_page.email' | t }}"
+              >
+              <label for="email">{{ 'customer.login_page.email' | t }}</label>
+            </div>
+            <div class="field">
+              <input
+                type="password"
+                name="customer[password]"
+                class="full"
+                value=""
+                placeholder="{{ 'customer.login_page.password' | t }}"
+              >
+              <label for="password">{{ 'customer.login_page.password' | t }}</label>
+            </div>
+            <button type="submit" class="button full">
+              <span>{{ 'customer.login_page.submit_register' | t }}</span>
+            </button>
+          {% endform %}
+          <div class="switch-login-section">
+            {{ 'customer.login_page.already_have_an_account' | t }}
+            <a href="{{ routes.account_login_url }}" class="text-button">{{ 'customer.login_page.login' | t }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%- if section_image -%}
+    </div>
+  {%- endif -%}
+  {% schema %}
+  {
+    "name": "Register",
+    "tag": "section",
+    "class": "section-customer-register",
+  	"settings": [
+  		{
+  			"type": "image_picker",
+  			"id": "section_image",
+  			"label": "Main image"
+  		}
+  	]
+  }
+  {% endschema %}
+{% endcomment %}
+
+{{ 'login-register.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign section_image = section.settings.section_image
+  assign section_image2 = section.settings.section_image2
+-%}
+<!--
+  {%- if section_image -%}
+  	<div class="thb-login-page-wrapper">
+  		{%- liquid
+  			assign master_width = section_image.src.width | append: 'x' | append: section_image.src.height
+
+  			render 'responsive-image', image: section_image, sizes: master_width
+  		 -%}
+  {%- endif -%}
+-->
+<div class="row custom-label">
+  <div class="small-12 columns">
+    <div class="thb-form-container">
+      <div class="thb-register-form">
+        <div class="logo">
+          {%- liquid
+            assign master_width = section_image.src.width | append: 'x' | append: section_image.src.height
+
+            render 'responsive-image', image: section_image, sizes: master_width
+          -%}
+          {%- liquid
+            assign master_width2 = section_image2.src.width | append: 'x' | append: section_image2.src.height
+
+            render 'responsive-image', image: section_image2, sizes: master_width2
+          -%}
+        </div>
+        {% form 'create_customer', novalidate: 'novalidate' %}
+          <div class="login-header">
+            <h4>
+              <a id="button2" href="{{ routes.account_login_url }}">{{ 'customer.login_page.login' | t }}</a>
+            </h4>
+            <div class="switch-login-section">
+              <a class="link-active" href="{{ routes.account_register_url }}">
+                <h4 id="button1">REGISTER</h4>
+              </a>
+            </div>
+          </div>
+          <!--
+            <h4>{{ 'customer.login_page.create_account' | t }}</h4>
+            <p>{{ 'customer.login_page.create_account_description' | t }}</p>
+          -->
+          {% if form.errors %}
+            <div class="form-notification error">
+              {% render 'svg-icons' with 'thb-error' %}
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+          <div class="fields">
+            <div class="field">
+              <label for="first_name">First name*</label>
+              <input
+                type="text"
+                name="customer[first_name]"
+                class="full"
+                value="{% if form.first_name %}{{ form.first_name }}{% endif %}"
+                placeholder="Enter your first name"
+              >
+            </div>
+            <div class="field">
+              <label for="last_name">Last name*</label>
+              <input
+                type="text"
+                name="customer[last_name]"
+                class="full"
+                value="{% if form.last_name %}{{ form.last_name }}{% endif %}"
+                placeholder="Enter your last name"
+              >
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">E-mail*</label>
+            <input
+              type="email"
+              name="customer[email]"
+              class="full {% if form.errors contains 'email' %}invalid{% endif %}"
+              value=""
+              placeholder="{{ 'customer.login_page.email' | t }}"
+            >
+          </div>
+          <div class="field">
+            <label for="password">Password*</label>
+            <input
+              type="password"
+              name="customer[password]"
+              class="full"
+              value=""
+              placeholder="{{ 'customer.login_page.password' | t }}"
+            >
+          </div>
+          <div class="field">
+            <label for="Birthday">Birthday</label>
+            <input
+              type="date"
+              id="dateInput"
+
+              class="full"
+              value=""
+            >
+          </div>
+          <div class="field">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" class="full">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+              <option value="prefer_not_to_say">Prefer not to say</option>
+            </select>
+          </div>
+          <div class="subscribe-alert">
+            <input type="checkbox" id="checkbox1">
+            <label for="checkbox1"
+              >Subscribe to receive email updates about Represent product launches, promotions and exclusive discounts.
+            </label>
+          </div>
+          <label class="term-text">
+            By submitting this form, you accept the
+            <a href="https://jardindedenclo.com/pages/terms-and-conditions-1">Terms & Conditions</a>
+          </label>
+          <button type="submit" class="button full">
+            <span>REGISTER</span>
+          </button>
+        {% endform %}
+        <div class="item-text">
+          <h1>CREATING AN ACCOUNT ENABLES YOU TO:</h1>
+          <div class="login-text-gap">
+            <!--
+              <div class="icon-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 64 64">
+                  <path fill="currentColor" d="M32 2C15.432 2 2 15.432 2 32s13.432 30 30 30s30-13.432 30-30S48.568 2 32 2m9.095 35.334c0 2.469-.417 4.424-1.251 5.867c-1.412 2.441-3.959 3.662-7.642 3.662s-6.153-.988-7.411-2.963c-1.256-1.975-1.885-4.67-1.885-8.082v-.668h5.729v.668c.049 2.244.279 3.822.693 4.734c.412.912 1.297 1.369 2.652 1.369c1.344 0 2.231-.498 2.663-1.496c.259-.592.388-1.588.388-2.992V17.139h6.063v20.195z"/>
+                </svg>
+                <label> Enrol in Jardin d'Eden system</label>
+              </div>
+            -->
+            <div class="icon-text">
+              <svg
+                width="18"
+                height="14"
+                viewBox="0 0 18 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="presentation"
+              >
+                <path d="M1 0.518555H17M1 0.518555V12.5186H17V0.518555M1 0.518555L9 7.51855L17 0.518555" stroke="black"></path>
+              </svg>
+              <label>
+                Receive the Jardin d’Eden newsletter and obtain access to the latest news, release information and
+                unique discount codes before anyone else.</label
+              >
+            </div>
+            <div class="icon-text">
+              <svg
+                width="18"
+                height="14"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="presentation"
+              >
+                <path d="M2.64258 6.2002L10.0009 10.4585L17.3093 6.2252" stroke="black" stroke-width="0.988235" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10 18.0085V10.4501" stroke="black" stroke-width="0.988235" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.14258 6.42885L9.99972 2.85742L18.0169 6.42885V14.286L9.99972 18.5717L2.14258 14.286V6.42885Z" stroke="black" stroke-width="0.988235" stroke-linecap="round"></path>
+              </svg>
+              <label>Be able to view your full order history and order tracking details.</label>
+            </div>
+            <div class="icon-text">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="presentation"
+              >
+                <path d="M4.5 0.518555H1V13.5186H4.5M4.5 0.518555V4.01855H9V0.518555M4.5 0.518555H9M9 0.518555H11L14 3.51855V13.5186H11M4.5 13.5186V7.51855H11V13.5186M4.5 13.5186H11" stroke="black"></path>
+              </svg>
+              <label>Save your payment details, to make checking out quicker and easier.</label>
+            </div>
+            <div class="icon-text">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                role="presentation"
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+              >
+                <path fill="#000" d="M3.647 0v18L9 13.725 14.353 18V0H3.647ZM13.5 16.2 9 12.6l-4.5 3.6V.9h9v15.3Z"></path>
+              </svg>
+              <label>Add products to your wishlist for viewing or purchasing at a later date.</label>
+            </div>
+            <!--
+              <div class="icon-text">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  version="1.1"
+                  width="19"
+                  height="19"
+                  viewBox="0 0 256 256"
+                  xml:space="preserve"
+                >
+                  <defs></defs>
+                  <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                    <path d="M 62.334 90 H 27.666 c -5.221 0 -9.469 -4.248 -9.469 -9.468 V 9.469 C 18.198 4.248 22.446 0 27.666 0 h 34.668 c 5.22 0 9.468 4.248 9.468 9.469 v 71.063 C 71.802 85.752 67.554 90 62.334 90 z M 27.666 2.967 c -3.585 0 -6.502 2.916 -6.502 6.502 v 71.063 c 0 3.584 2.916 6.501 6.502 6.501 h 34.668 c 3.584 0 6.501 -2.917 6.501 -6.501 V 9.469 c 0 -3.585 -2.917 -6.502 -6.501 -6.502 H 27.666 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"></path>
+                    <path d="M 54.202 11.62 H 35.799 c -0.82 0 -1.484 -0.664 -1.484 -1.484 c 0 -0.82 0.664 -1.484 1.484 -1.484 h 18.403 c 0.819 0 1.484 0.664 1.484 1.484 C 55.685 10.956 55.021 11.62 54.202 11.62 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"></path>
+                    <circle cx="44.997" cy="78.487" r="2.817" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "></circle>
+                    <path d="M 45 81.801 c -1.826 0 -3.311 -1.485 -3.311 -3.312 c 0 -1.825 1.485 -3.311 3.311 -3.311 c 1.826 0 3.312 1.485 3.312 3.311 C 48.312 80.316 46.827 81.801 45 81.801 z M 45 76.167 c -1.281 0 -2.322 1.041 -2.322 2.322 c 0 1.281 1.042 2.323 2.322 2.323 c 1.281 0 2.323 -1.042 2.323 -2.323 C 47.323 77.208 46.281 76.167 45 76.167 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"></path>
+                  </g>
+                </svg>
+                <label>Access your prestige account on our Mobile App</label>
+              </div>
+            -->
+          </div>
+        </div>
+        <!--
+          <div class="switch-login-section">
+            {{ 'customer.login_page.already_have_an_account' | t }}
+            <a href="{{ routes.account_login_url }}" class="text-button">{{ 'customer.login_page.login' | t }}</a>
+          </div>
+        -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+   .red {
+            color: #7B7B7B;
+        }
+    .link-active:active {
+      background-color: #3e8e41; /* Darker green background */
+      transform: scale(0.98); /* Slightly reduce the size to give a pressed effect */
+  }
+      .login-text-gap {
+        display: grid;
+        gap: 21px;
+    }
+      .item-text{
+        margin-top:3rem;
+      }
+      .icon-text{
+        display:flex;
+        align-items: center;
+        gap: 14px;
+
+      }
+      .icon-text label{
+         text-align:left;
+      }
+      .term-text{
+        text-align: left;
+        margin-left: 26px;
+      }
+      .term-text a{
+        border-bottom:1px solid;
+      }
+      .subscribe-alert{
+        display:flex;
+      }
+       #gender {
+          color: #676767;
+        }
+
+       #dateInput {
+          color: #676767 !important;
+        }
+        .login-header{
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          border-bottom: 1px solid;
+          margin-bottom: 3rem;
+          margin-top: 3rem;
+        }
+        .logo{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+        }
+        .custom-label label{
+          display:inline;
+          position:relative;
+          padding:0px;
+        }
+        ::placeholder {
+        color: #676767 !important;
+      }
+</style>
+<script>
+  console.log('Hello Tajush');
+</script>
+{% schema %}
+{
+  "name": "Register",
+  "tag": "section",
+  "class": "section-customer-register",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "section_image",
+			"label": "Main image"
+		},
+      {
+			"type": "image_picker",
+			"id": "section_image2",
+			"label": "Main image"
+		}
+	]
+}
+{% endschema %}

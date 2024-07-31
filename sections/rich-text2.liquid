@@ -1,0 +1,457 @@
+{{- 'rich-text.css' | asset_url | stylesheet_tag -}}
+{%- liquid
+  assign section_width = section.settings.section_width
+  assign text_width = section.settings.text_width
+  assign text_position = section.settings.text_position
+  assign text_alignment = section.settings.text_alignment
+
+  assign color_bg = section.settings.color_bg | downcase
+  assign color_text = section.settings.color_text
+  assign color_links = section.settings.color_links
+
+  assign disable_top_spacing = section.settings.disable_top_spacing
+  assign disable_bottom_spacing = section.settings.disable_bottom_spacing
+
+  assign solid_button_label = color_bg
+  if color_bg == 'transparent' or color_bg == 'rgba(0,0,0,0)'
+    assign solid_button_label = '#ffffff'
+  endif
+-%}
+<div class="row {{ section_width }}">
+  <div class="small-12 columns">
+    <div
+      class="rich-text text-{{ text_alignment }} text-position-{{ text_position }} text-width-{{ text_width }} section-spacing-padding{% if disable_top_spacing %} section-spacing--disable-top{% endif %}{% if disable_bottom_spacing %} section-spacing--disable-bottom{% endif %}"
+      style="--color-bg: {{ color_bg }}; --color-text: {{ color_text }}; --solid-button-background: {{ color_text }}; --outline-button-label: {{ color_text }}; --solid-button-label: {{ solid_button_label }}; --bg-body: {{ color_bg }}; --color-accent: {{ color_links }}; --color-accent-rgb:  {{ color_links | color_extract: 'red' }}, {{ color_links | color_extract: 'green' }}, {{ color_links | color_extract: 'blue' }};"
+    >
+      <div class="rich-text__inner">
+        {% for block in section.blocks %}
+          {%- case block.type -%}
+            {%- when 'image' -%}
+              {%- if block.settings.image != blank -%}
+                {%- liquid
+                  assign image = block.settings.image
+                  assign master_width = image.src.width | append: 'x' | append: image.src.height
+                  render 'responsive-image', image: image, sizes: master_width, retina: block.settings.retina
+                -%}
+              {%- else -%}
+                <div class="thb-placeholder">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder_svg_tag' }}
+                </div>
+              {%- endif -%}
+            {%- when 'subheading' -%}
+              <p class="subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+            {%- when 'heading' -%}
+              <h3 class="{{ block.settings.size }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text | newline_to_br }}
+              </h3>
+
+            {%- when 'text' -%}
+              <div class="rte {{ block.settings.size }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+                {{ block.settings.custom_liquid }}
+                <div>
+                  <form>
+                    <div class="radio-btn">
+                      <label>
+                        <input type="radio" name="option" value="too_many_emails">
+                        Too many offers emails.
+                      </label>
+                      <label>
+                        <input type="radio" name="option" value="didnt_sign_up">
+                        I didn't sign up.
+                      </label>
+                    </div>
+                    <div class="radio-btn">
+                      <label>
+                        <input type="radio" name="option" value="not_relevant">
+                        Content not relevant.
+                      </label>
+                      <label>
+                        <input id="toggleInput" id="showInput" type="radio" name="option" value="other">
+                        Other (fill in reason below)
+                      </label>
+
+                      <input type="text" id="inputField" placeholder="Enter some text">
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            {%- when 'button' -%}
+              {% if block.settings.link_label != blank %}
+                <a
+                  class="button{% if block.settings.button_outline %} outline{%- endif -%}"
+                  href="{{ block.settings.link }}"
+                  {{ block.shopify_attributes }}
+                  ><span>{{ block.settings.link_label }}</span></a
+                >
+              {% endif %}
+            {%- when 'text-button' -%}
+              {% if block.settings.link_label != blank %}
+                <a class="text-button" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+                  {{- block.settings.link_label -}}
+                </a>
+              {% endif %}
+            {%- when 'custom_liquid' -%}
+              {{ block.settings.custom_liquid }}
+          {%- endcase -%}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+   #inputField {
+            display: none; /* Initially hide the input field */
+        }
+      form {
+          display: flex;
+          flex-wrap: wrap;
+        justify-content: space-around;
+          /* gap: 20px; */
+      }
+      .radio-btn {
+        display: flex;
+        flex-direction: column;
+            text-align: -webkit-left;
+  gap: 27px;
+    }
+      label {
+          /* display: flex;
+          align-items: center; */
+          /* margin-right: 20px;
+          margin-bottom: 10px; */
+          font-weight: bold;
+        font-size: 18px;
+      }
+      input[type="radio"] {
+          /* margin-right: 10px; */
+      }
+</style>
+<script>
+     document.addEventListener('DOMContentLoaded', (event) => {
+      const toggleInputRadio = document.getElementById('toggleInput');
+      const inputField = document.getElementById('inputField');
+
+      toggleInputRadio.addEventListener('click', () => {
+          if (inputField.style.display === 'none' || inputField.style.display === '') {
+              inputField.style.display = 'block';
+          } else {
+              inputField.style.display = 'none';
+          }
+      });
+  });
+</script>
+{% schema %}
+{
+  "name": "Rich text",
+"class": "section-rich-text",
+  "settings": [
+	{
+		"type": "select",
+		"id": "section_width",
+		"options": [
+			{
+				"value": "grid",
+				"label": "Grid"
+			},
+			{
+				"value": "full-width-row",
+				"label": "Full width"
+			},
+			{
+				"value": "full-width-row-full",
+				"label": "Full width, no spacing"
+			}
+		],
+		"default": "grid",
+		"label": "Section width"
+	},
+	{
+		"type": "select",
+		"id": "text_width",
+		"label": "Content width",
+		"options": [
+			{
+				"value": "small",
+				"label": "Small"
+			},
+			{
+				"value": "medium",
+				"label": "Medium"
+			},
+			{
+				"value": "large",
+				"label": "Large"
+			},
+			{
+				"value": "xlarge",
+				"label": "Extra large"
+			},
+			{
+				"value": "grid",
+				"label": "Grid"
+			}
+		],
+		"default": "medium"
+	},
+	{
+		"type": "select",
+		"id": "text_position",
+		"label": "Content position",
+		"options": [
+			{
+				"value": "left",
+				"label": "Left"
+			},
+			{
+				"value": "center",
+				"label": "Center"
+			},
+			{
+				"value": "right",
+				"label": "Right"
+			}
+		],
+		"default": "center"
+	},
+	{
+		"type": "select",
+		"id": "text_alignment",
+		"label": "Content alignment",
+		"options": [
+			{
+				"value": "left",
+				"label": "Left"
+			},
+			{
+				"value": "center",
+				"label": "Center"
+			},
+			{
+				"value": "right",
+				"label": "Right"
+			}
+		],
+		"default": "center"
+	},
+	{
+     "type": "header",
+     "content": "Colors"
+   },
+	{
+      "type": "color",
+      "id": "color_bg",
+      "label": "Background",
+      "default": "transparent"
+    },
+	{
+      "type": "color",
+      "id": "color_text",
+      "label": "Text",
+      "default": "#151515"
+    },
+	{
+      "type": "color",
+      "id": "color_links",
+      "label": "Links",
+      "default": "#151515"
+    },
+	{
+     "type": "header",
+     "content": "Spacing"
+   },
+	{
+		"type": "checkbox",
+		"id": "disable_top_spacing",
+		"default": false,
+		"label": "Remove top spacing"
+	},
+	{
+		"type": "checkbox",
+		"id": "disable_bottom_spacing",
+		"default": false,
+		"label": "Remove bottom spacing"
+	}
+  ],
+"blocks": [
+	{
+		"type": "image",
+		"name": "Image",
+		"settings": [
+			{
+				"type": "image_picker",
+				"id": "image",
+				"label": "Image"
+			},
+			{
+				"type": "checkbox",
+				"id": "retina",
+				"label": "Enable retina",
+				"default": true,
+				"info": "Image will be displayed at half the size, making it look crisp on retina screens."
+			}
+		]
+	},
+	{
+		"type": "subheading",
+		"name": "Subheading",
+		"settings": [
+			{
+				"type": "text",
+				"id": "text",
+				"label": "Text",
+				"default": "Subheading for this section"
+			}
+		]
+	},
+	{
+		"type": "heading",
+		"name": "Heading",
+		"settings": [
+			{
+				"type": "text",
+				"id": "text",
+				"label": "Text",
+				"default": "Talk about your brand"
+			},
+			{
+        "type": "select",
+        "id": "size",
+        "label": "Size",
+        "options": [
+          {
+            "value": "h1",
+            "label": "Extra Large"
+          },
+					{
+            "value": "h2",
+            "label": "Large"
+          },
+					{
+            "value": "h3",
+            "label": "Medium"
+          },
+					{
+            "value": "h4",
+            "label": "Small"
+          }
+        ],
+        "default": "h3"
+      }
+		]
+	},
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+			{
+				"type": "richtext",
+				"id": "text",
+				"label": "Content",
+				"default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+			},
+			{
+				"type": "liquid",
+				"id": "custom_liquid",
+				"label": "Custom liquid",
+				"info": "Add app snippets or other Liquid code to create advanced customizations."
+			},
+			{
+        "type": "select",
+        "id": "size",
+        "label": "Size",
+        "options": [
+					{
+            "value": "text-size-large",
+            "label": "Large"
+          },
+					{
+            "value": "text-size-regular",
+            "label": "Medium"
+          },
+					{
+            "value": "text-size-small",
+            "label": "Small"
+          }
+        ],
+        "default": "text-size-regular"
+      }
+      ]
+    },
+	{
+      "type": "button",
+      "name": "Button",
+      "settings": [
+			{
+				"id": "link_label",
+				"type": "text",
+				"label": "Label",
+				"default": "Learn More",
+				"info": "Leave the label blank to hide the button."
+			},
+			{
+				"id": "link",
+				"type": "url",
+				"label": "Link"
+			},
+			{
+				"type": "checkbox",
+				"id": "button_outline",
+				"label": "Use outline button style",
+				"default": false
+			}
+      ]
+    },
+	{
+      "type": "text-button",
+      "name": "Link",
+      "settings": [
+			{
+				"id": "link_label",
+				"type": "text",
+				"label": "Label",
+				"default": "Learn More",
+				"info": "Leave the label blank to hide the button."
+			},
+			{
+				"id": "link",
+				"type": "url",
+				"label": "Link"
+			}
+      ]
+    },
+	{
+		"type": "custom_liquid",
+		"name": "Custom liquid",
+		"settings": [
+			{
+				"type": "liquid",
+				"id": "custom_liquid",
+				"label": "Custom liquid",
+				"info": "Add app snippets or other Liquid code to create advanced customizations."
+			}
+		]
+	}
+  ],
+  "presets": [
+    {
+      "name": "Rich text2",
+		"blocks": [
+			{
+				"type": "subheading"
+			},
+       {
+         "type": "heading"
+       },
+       {
+         "type": "text"
+       },
+       {
+         "type": "button"
+       }
+     ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{ shop.locale }}">
+  <head>
+    {{ content_for_header }}
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+  </head>
+  <body>
+    {{ content_for_layout }}
+    <!-- Your content here -->
+
+    <!-- Support Hub Script -->
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Quill.js -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script src="{{ 'support_hub.js' | asset_url }}"></script>
+    <!-- Google Custom Search Engine -->
+    <script async src="https://cse.google.com/cse.js?cx=b1f70dddc9d864c87"></script>
+
+    <!-- Existing code -->
+  </body>
+</html>

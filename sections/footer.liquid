@@ -1,0 +1,630 @@
+{{- 'collapsible-content.css' | asset_url | stylesheet_tag -}}
+{% liquid
+  assign full_width = section.settings.full_width
+  assign copyright_text = section.settings.copyright_text
+  assign show_language_switcher = section.settings.show_language_switcher
+  assign show_currency_switcher = section.settings.show_currency_switcher
+  assign show_payment_icons = section.settings.show_payment_icons
+  assign section_heading = section.settings.heading
+  assign section_description = section.settings.description
+  assign uppercase_heading = section.settings.uppercase_heading
+  assign disable_top_spacing = section.settings.disable_top_spacing
+  assign disable_bottom_spacing = section.settings.disable_bottom_spacing
+%}
+
+<link rel="stylesheet" href="{{ 'footer.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'footer.css' | asset_url | stylesheet_tag }}</noscript>
+
+<footer class="footer">
+  <div
+    class="footer-row"
+  >
+    {%- for block in section.blocks -%}
+      {% if block.type == 'text' %}
+        {%- liquid
+          assign column_class = 'small-12 medium-4 large-2'
+          case block.settings.column_size
+            when 'medium'
+              assign column_class = 'small-12 medium-3'
+            when 'large'
+              assign column_class = 'small-12 medium-6'
+          endcase
+        -%}
+        <div class="{{ column_class | escape }} columns" {{ block.shopify_attributes }}>
+          <div class="widget widget--text">
+            {%- if block.settings.title != blank -%}
+              <div class="thb-widget-title">{{ block.settings.title }}</div>
+            {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              {% assign image = block.settings.image %}
+              {% assign master_width = image.src.width | append: 'x' | append: image.src.height %}
+              {%- render 'responsive-image', image: image, sizes: master_width, retina: 1, priority: 'low' -%}
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="rte text-size--{{ block.settings.text_size }}">
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.button_text != blank -%}
+              <a
+                class="text-button"
+                href="{{ block.settings.button_link }}"
+                role="button"
+                title="{{ block.settings.button_text | escape }}"
+              >
+                {{- block.settings.button_text -}}
+              </a>
+            {%- endif -%}
+            {%- if block.settings.show_social_links -%}
+              {%- render 'social-links' -%}
+            {%- endif -%}
+          </div>
+        </div>
+      {% endif %}
+      {%- if block.type == 'menu' -%}
+        {%- liquid
+          assign column_class = 'small-12 medium-4 large-2'
+          case block.settings.column_size
+            when 'medium'
+              assign column_class = 'small-12 medium-3'
+            when 'large'
+              assign column_class = 'small-12 medium-6'
+          endcase
+        -%}
+        <div class="{{ column_class | escape }} columns widget--menu-column" {{ block.shopify_attributes }}>
+          <div class="widget widget--menu">
+            <button class="thb-widget-title collapsible" tabindex="0">
+              {{ block.settings.title }}
+              <span></span>
+            </button>
+            {%- if block.settings.menu != blank -%}
+              <ul class="thb-widget-menu">
+                {% for link in block.settings.menu.links %}
+                  {% assign has_sub_menu = false %}
+                  {% if link.links.size > 0 %}
+                    {% assign has_sub_menu = true %}
+                  {% endif %}
+                  <li class="{% if has_sub_menu %}menu-item-has-children{% endif %}{% if link.active %} active{% endif %}">
+                    <a
+                      href="{{ link.url }}"
+                      title="{{ link.title | escape }}"
+                      {%- if link.active %}
+                        aria-current="page"
+                      {% endif -%}
+                    >
+                      {{- link.title -}}
+                    </a>
+                    {%- if has_sub_menu -%}
+                      <span class="thb-arrow" tabindex="0">{%- render 'svg-icons' with 'thb-dropdown-bottom' -%}</span>
+                    {%- endif %}
+                    {% if has_sub_menu %}
+                      <ul class="sub-menu" tabindex="-1">
+                        {% for l in link.links %}
+                          {% assign has_sub_menu = false %}
+                          {% if l.links.size > 0 %}
+                            {% assign has_sub_menu = true %}
+                          {% endif %}
+                          <li
+                            class="{% if has_sub_menu %}menu-item-has-children{% endif %}{% if l.active %} active{% endif %}"
+                            role="none"
+                          >
+                            <a href="{{ l.url }}" title="{{ l.title | escape }}" role="menuitem">{{ l.title }}</a>
+                            {%- if has_sub_menu -%}
+                              <span class="thb-arrow" tabindex="0">
+                                {%- render 'svg-icons' with 'thb-dropdown-bottom' -%}
+                              </span>
+                            {%- endif %}
+                            {% if has_sub_menu %}
+                              <ul class="sub-menu" role="menu">
+                                {% for sub_link in l.links %}
+                                  {% assign has_sub_menu = false %}
+                                  {% if sub_link.links.size > 0 %}
+                                    {% assign has_sub_menu = true %}
+                                  {% endif %}
+                                  <li
+                                    class="{% if has_sub_menu %}menu-item-has-children{% endif %}{% if sub_link.active %} active{% endif %}"
+                                    role="none"
+                                  >
+                                    <a href="{{ sub_link.url }}" title="{{ sub_link.title | escape }}" role="menuitem">
+                                      {{- sub_link.title -}}
+                                    </a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                            {% endif %}
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if block.type == 'signup' -%}
+        {%- liquid
+          assign column_class = 'small-12 medium-4 large-2'
+          case block.settings.column_size
+            when 'medium'
+              assign column_class = 'small-12 medium-3'
+            when 'large'
+              assign column_class = 'small-12 medium-6'
+          endcase
+        -%}
+        <div class="{{ column_class | escape }} columns" {{ block.shopify_attributes }}>
+          <div class="widget widget--signup">
+            {% if block.settings.title != blank %}
+              <div class="thb-widget-title">{{ block.settings.title }}</div>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              {{ block.settings.text }}
+            {% endif %}
+            {% render 'email-signup-form2' %}
+
+            <div class=" flex flex-wrap justify-between">
+              <a
+                href="https://www.instagram.com/jardindedenclo/"
+                target="_blank"
+                class="w-8 h-auto text-gray-600 hover:text-black transition duration-150 flex items-center justify-center"
+                aria-label="Instagram (opens in a new tab)"
+                data-uw-rm-ext-link="na"
+                data-uw-rm-brl="BE"
+                data-uw-original-href="https://www.instagram.com/representclo/"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="presentation"
+                >
+                  <path
+                      d="M15.9968 9.44127C18.1333 9.44127 18.3841 9.45079 19.2286 9.48889C20.0095 9.52381 20.4317 9.65397 20.7143 9.76508C21.0889 9.91111 21.3556 10.0825 21.6349 10.3619C21.9143 10.6413 22.0889 10.9079 22.2317 11.2825C22.3397 11.5651 22.473 11.9873 22.5079 12.7683C22.546 13.6127 22.5556 13.8635 22.5556 16C22.5556 18.1365 22.546 18.3873 22.5079 19.2317C22.473 20.0127 22.3429 20.4349 22.2317 20.7175C22.0857 21.0921 21.9143 21.3587 21.6349 21.6381C21.3556 21.9175 21.0889 22.0921 20.7143 22.2349C20.4317 22.3429 20.0095 22.4762 19.2286 22.5111C18.3841 22.5492 18.1333 22.5587 15.9968 22.5587C13.8603 22.5587 13.6095 22.5492 12.7651 22.5111C11.9841 22.4762 11.5619 22.346 11.2794 22.2349C10.9048 22.0889 10.6381 21.9175 10.3587 21.6381C10.0794 21.3587 9.90476 21.0921 9.7619 20.7175C9.65397 20.4349 9.52064 20.0127 9.48571 19.2317C9.44762 18.3873 9.4381 18.1365 9.4381 16C9.4381 13.8635 9.44762 13.6127 9.48571 12.7683C9.52064 11.9873 9.65079 11.5651 9.7619 11.2825C9.90794 10.9079 10.0794 10.6413 10.3587 10.3619C10.6381 10.0825 10.9048 9.90794 11.2794 9.76508C11.5619 9.65714 11.9841 9.52381 12.7651 9.48889C13.6095 9.44762 13.8603 9.44127 15.9968 9.44127ZM15.9968 8C13.8254 8 13.5524 8.00952 12.6984 8.04762C11.8476 8.08571 11.2667 8.22222 10.7587 8.41905C10.2317 8.62222 9.7873 8.89841 9.34286 9.34286C8.89841 9.7873 8.6254 10.2349 8.41905 10.7587C8.22222 11.2667 8.08571 11.8476 8.04762 12.7016C8.00952 13.5524 8 13.8254 8 15.9968C8 18.1683 8.00952 18.4413 8.04762 19.2952C8.08571 20.146 8.22222 20.727 8.41905 21.2381C8.62222 21.7651 8.89841 22.2095 9.34286 22.654C9.7873 23.0984 10.2349 23.3714 10.7587 23.5778C11.2667 23.7746 11.8476 23.9111 12.7016 23.9492C13.5556 23.9873 13.8254 23.9968 16 23.9968C18.1746 23.9968 18.4444 23.9873 19.2984 23.9492C20.1492 23.9111 20.7302 23.7746 21.2413 23.5778C21.7683 23.3746 22.2127 23.0984 22.6571 22.654C23.1016 22.2095 23.3746 21.7619 23.581 21.2381C23.7778 20.7302 23.9143 20.1492 23.9524 19.2952C23.9905 18.4413 24 18.1714 24 15.9968C24 13.8222 23.9905 13.5524 23.9524 12.6984C23.9143 11.8476 23.7778 11.2667 23.581 10.7556C23.3778 10.2286 23.1016 9.78413 22.6571 9.33968C22.2127 8.89524 21.7651 8.62222 21.2413 8.41587C20.7333 8.21905 20.1524 8.08254 19.2984 8.04444C18.4413 8.00952 18.1683 8 15.9968 8Z"
+                      fill="black"></path>
+                  <path
+                      d="M15.9966 11.8867C13.7299 11.8867 11.8887 13.7248 11.8887 15.9947C11.8887 18.2645 13.7299 20.1026 15.9966 20.1026C18.2633 20.1026 20.1045 18.2613 20.1045 15.9947C20.1045 13.728 18.2633 11.8867 15.9966 11.8867ZM15.9966 18.6613C14.5236 18.6613 13.3299 17.4677 13.3299 15.9947C13.3299 14.5216 14.5236 13.328 15.9966 13.328C17.4696 13.328 18.6633 14.5216 18.6633 15.9947C18.6633 17.4677 17.4696 18.6613 15.9966 18.6613Z"
+                      fill="black"></path>
+                  <path
+                      d="M20.2693 12.687C20.7988 12.687 21.228 12.2578 21.228 11.7283C21.228 11.1988 20.7988 10.7695 20.2693 10.7695C19.7398 10.7695 19.3105 11.1988 19.3105 11.7283C19.3105 12.2578 19.7398 12.687 20.2693 12.687Z"
+                      fill="black"></path>
+                </svg>
+              </a>
+
+              <a
+                href="https://www.facebook.com/jardindedenclo/"
+                target="_blank"
+                class="w-8 h-auto text-gray-600 hover:text-black transition duration-150 flex items-center justify-center"
+                aria-label="Facebook (opens in a new tab)"
+                data-uw-rm-ext-link="na"
+                data-uw-rm-brl="BE"
+                data-uw-original-href="https://www.facebook.com/Representclo"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="presentation"
+                >
+                  <path
+                      d="M20 13.5161H17.3333V12.086C17.3333 11.5591 17.8095 11.4086 18.0952 11.4086H20V9H17.3333C14.381 9 13.7143 10.8065 13.7143 11.9355V13.5161H12V16H13.7143V23H17.3333V16H19.7143L20 13.5161Z"
+                      fill="black"></path>
+                </svg>
+              </a>
+
+              <a
+                href="https://twitter.com/jardindedenclo"
+                target="_blank"
+                class="w-8 h-auto text-gray-600 hover:text-black transition duration-150 flex items-center justify-center"
+                aria-label="Twitter (opens in a new tab)"
+                data-uw-rm-ext-link="na"
+                data-uw-rm-brl="BE"
+                data-uw-original-href="https://twitter.com/representclo"
+              >
+                <svg
+                  width="13"
+                  height="15"
+                  viewBox="0 0 1200 1227"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="    margin-bottom: 7px;"
+                >
+                  <path
+                      d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"
+                      fill="#000"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if block.type == 'social' -%}
+        {%- liquid
+          assign column_class = 'small-6 medium-4 large-2'
+          case block.settings.column_size
+            when 'medium'
+              assign column_class = 'small-12 medium-3'
+            when 'large'
+              assign column_class = 'small-12 medium-6'
+          endcase
+        -%}
+
+        <div class="{{ column_class | escape }} columns" {{ block.shopify_attributes }}>
+          <div class="widget widget--social">
+            {% if block.settings.title != blank %}
+              <div class="thb-widget-title">{{ block.settings.title }}</div>
+            {% endif %}
+            {% render 'social-links' %}
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if block.type == 'custom_liquid' -%}
+        {%- liquid
+          assign column_class = 'small-6 medium-4 large-2'
+          case block.settings.column_size
+            when 'medium'
+              assign column_class = 'small-12 medium-3'
+            when 'large'
+              assign column_class = 'small-12 medium-6'
+          endcase
+        -%}
+        <div class="collapsible-content heading-uppercase-{{ uppercase_heading }} section-spacing{% if disable_top_spacing %} section-spacing--disable-top{% endif %}{% if disable_bottom_spacing %} section-spacing--disable-bottom{% endif %}">
+          <div class="row">
+            <div class="small-12 columns">
+              <div
+                class="collapsible-content__inner collapsible-link"
+              >
+                {%- for block in section.blocks -%}
+                  {%- if block.settings.heading != blank -%}
+                    <collapsible-row
+                      style="border:none;padding:0;margin:0;"
+                      class="accordion"
+                      {{ block.shopify_attributes }}
+                    >
+                      <details
+                        id="Details-{{ block.id }}-{{ section.id }}"
+                        {% if block.settings.open %}
+                          open
+                        {% endif %}
+                      >
+                        <summary>
+                          {{ block.settings.heading | default: block.settings.page.title }}
+                          <span></span>
+                        </summary>
+                        <div
+                          class="collapsible__content accordion__content rte"
+                          id="Accordion-{{ block.id }}-{{ section.id }}"
+                        >
+                          {{ block.settings.content }}
+                          {{ block.settings.page.content }}
+                        </div>
+                      </details>
+                    </collapsible-row>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <div class="sub-footer">
+    <div class="row {% if full_width %}full-width-row{% endif %}">
+      <!--
+        <div class="small-12 medium-8 columns">
+          {% render 'localization',
+            id: 'FooterLocalization',
+            show_language_switcher: show_language_switcher,
+            show_currency_switcher: show_currency_switcher
+          %}
+        </div>
+      -->
+      <div class="small-12 medium-4 columns">
+        {%- if show_payment_icons -%}
+          <div class="footer-payment-icons">
+            {%- unless shop.enabled_payment_types == empty -%}
+              {%- for type in shop.enabled_payment_types -%}
+                <figure>{{ type | payment_type_svg_tag: class: 'payment-icons__icon' }}</figure>
+              {%- endfor -%}
+            {%- endunless -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="small-12 columns">
+        <p>
+          &copy; {{ 'now' | date: '%Y' }}
+          {{ shop.name }}, {{ copyright_text }}
+          {{ powered_by_link }}
+        </p>
+        {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
+          <div class="footer--follow-on-shop">
+            {{ shop | login_button: action: 'follow' }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>
+<style>
+   footer button.submit {
+      background-color: black;
+  }
+  footer fieldset {
+    max-width: 305px;
+  }
+</style>
+
+{% schema %}
+  {
+		"name": "Footer",
+		"class": "section-footer",
+		"settings": [
+			{
+				"type": "checkbox",
+				"id": "full_width",
+				"default": false,
+				"label": "Make section full width"
+			},
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "Additional copyright text",
+        "default": "All rights reserved."
+      },
+			{
+        "type": "checkbox",
+        "id": "show_language_switcher",
+        "label": "Enable language switcher",
+        "default": true,
+				"info": "To add a language, go to your [language settings](/admin/settings/languages)."
+      },
+			{
+        "type": "checkbox",
+        "id": "show_currency_switcher",
+        "label": "Enable currency switcher",
+        "default": true,
+				"info": "To add a country/region, go to your [payment settings](/admin/settings/payments)."
+      },
+			{
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": true,
+				"info": "By default your theme shows the icons that are associated with the payment gateway you have enabled in the [payment settings](/admin/settings/payments)."
+      },
+			{
+	      "type": "header",
+	      "content": "Follow on Shop",
+	      "info": "To allow customers to follow your store on the Shop app from your storefront, Shop Pay must be enabled. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
+	    },
+			{
+	      "type": "checkbox",
+	      "id": "enable_follow_on_shop",
+	      "default": true,
+	      "label": "Enable Follow on Shop"
+	    }
+		],
+		"blocks": [
+
+
+			{
+	      "type": "@app"
+	    },
+			{
+        "type": "text",
+        "name": "Text",
+				"settings": [
+					{
+						 "type": "select",
+						 "id": "column_size",
+						 "label": "Column size",
+						 "options": [
+							 { "value": "small", "label": "Small" },
+							 { "value": "medium", "label": "Medium" },
+							 { "value": "large", "label": "Large" }
+						 ],
+						 "default": "small"
+					},
+					{
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+					{
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+						"info": "240 x 100 px .png recommended."
+          },
+					{
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Add company info here.</p>"
+          },
+					{
+						"type": "select",
+						"id": "text_size",
+						"label": "Text size",
+						"options": [
+							{
+								"value": "small",
+								"label": "Small"
+							},
+							{
+								"value": "medium",
+								"label": "Medium"
+							},
+							{
+								"value": "large",
+								"label": "Large"
+							}
+						],
+						"default": "medium"
+					},
+					{
+            "id": "button_text",
+            "type": "text",
+            "label": "Button label",
+            "default": "Explore",
+						"info": "Leave the label blank to hide the button."
+          },
+          {
+            "id": "button_link",
+            "type": "url",
+            "label": "Button link"
+          },
+					{
+		        "type": "checkbox",
+		        "id": "show_social_links",
+		        "label": "Show social links",
+		        "default": true
+		      }
+				]
+      },
+      {
+        "type": "menu",
+        "name": "Menu",
+				"settings": [
+					{
+						 "type": "select",
+						 "id": "column_size",
+						 "label": "Column size",
+						 "options": [
+							 { "value": "small", "label": "Small" },
+							 { "value": "medium", "label": "Medium" },
+							 { "value": "large", "label": "Large" }
+						 ],
+						 "default": "small"
+					},
+					{
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+					{
+						"type": "link_list",
+						"id": "menu",
+						"default": "footer",
+						"label": "Menu",
+						"info": "Select navigation to display"
+					}
+				]
+      },
+{
+				"type": "collapsible_tab",
+				"name": "Collapsible row",
+				"settings": [
+						{
+						"type": "text",
+						"id": "heading",
+						"default": "Collapsible row",
+						"info": "Include a heading that explains the content.",
+						"label": "Heading"
+					},
+					{
+						"type": "checkbox",
+						"id": "open",
+						"default": false,
+						"label": "Open by default"
+					},
+					{
+						"type": "richtext",
+						"id": "content",
+						"label": "Row content"
+					},
+					{
+						"type": "page",
+						"id": "page",
+						"label": "Row content from page"
+					}
+				]
+			},
+
+			{
+        "type": "social",
+        "name": "Social links",
+				"settings": [
+					{
+						 "type": "select",
+						 "id": "column_size",
+						 "label": "Column size",
+						 "options": [
+							 { "value": "small", "label": "Small" },
+							 { "value": "medium", "label": "Medium" },
+							 { "value": "large", "label": "Large" }
+						 ],
+						 "default": "small"
+					},
+					{
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          }
+				]
+      },
+			{
+        "type": "signup",
+        "name": "Email signup",
+				"limit": 1,
+				"settings": [
+					{
+						 "type": "select",
+						 "id": "column_size",
+						 "label": "Column size",
+						 "options": [
+							 { "value": "small", "label": "Small" },
+							 { "value": "medium", "label": "Medium" },
+							 { "value": "large", "label": "Large" }
+						 ],
+						 "default": "small"
+					},
+					{
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+					{
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Add a text to attract more customers to <strong>sign up!</strong></p>"
+          }
+				]
+      },
+			{
+        "type": "custom_liquid",
+        "name": "Custom liquid",
+				"settings": [
+					{
+						 "type": "select",
+						 "id": "column_size",
+						 "label": "Column size",
+						 "options": [
+							 { "value": "small", "label": "Small" },
+							 { "value": "medium", "label": "Medium" },
+							 { "value": "large", "label": "Large" }
+						 ],
+						 "default": "small"
+					},
+					{
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+					{
+						"type": "liquid",
+						"id": "custom_liquid",
+						"label": "Custom liquid",
+						"info": "Add app snippets or other Liquid code to create advanced customizations."
+					}
+				]
+      }
+    ]
+  }
+{% endschema %}

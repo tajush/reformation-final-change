@@ -1,0 +1,813 @@
+{% comment %}
+  <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+  {% form 'customer', class: 'signup-form' %}
+    <main class="popup-container">
+      <section
+        id="newsletter-popup"
+        class="popup-section"
+        style="background-image: url({{ '0097.jpg' | asset_url }});"
+      >
+        <div class="inner-container">
+          <div class="row">
+            <div class="popup-inner">
+              <div class="popup-inner--row">
+                <div
+                  class="popup-inner-column bg-cover"
+                  style="background-image: url({{ '0097.jpg' | asset_url }});"
+                ></div>
+                <div  class="popup-inner-column">
+                  <div class="popup-form">
+                    <div class="form-header">
+                      <h4 class="form-subheading">UNLOCK</h4>
+                      <h2 class="form-heading">15% OFF</h2>
+                      <div>
+                        <p>YOUR ORDER</p>
+                        <p>FULL PRICE ITEMS ONLY</p>
+                      </div>
+                    </div>
+                    <div class="radio-btn">
+                      <h6>What are you interested in?</h6>
+                      <label> <input type="radio" name="gender" value="men"> Men </label>
+                      <label> <input type="radio" name="gender" value="women"> Women </label>
+                      <label> <input type="radio" name="gender" value="both"> Both </label>
+                    </div>
+                    <div class="form-fields">
+                      {% render 'email-signup-form5' %}
+                      <!--
+                        <input type="email" name="email" class="form-field user-email" placeholder=" Email Address">
+                      -->
+
+                      <button  type="submit" class="submit-btn">
+                        <!-- <a href="#contact_form" style="color:white;">CONTINUE</a> -->
+                        CONTINUE
+                      </button>
+                    </div>
+                    <span title="Close" class="close-popup--btn" style="color:black;"
+                      ><i class="fa-solid fa-xmark"></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  {% endform %}
+  <style>
+        @import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+      .popup-container{
+      	font-size: 17px;
+      	line-height: 30px;
+      	font-weight: 400;
+      	-moz-osx-font-smoothing: grayscale;
+      	word-break: break-word;
+      	-webkit-font-smoothing: antialiased;
+      	font-family: "Schibsted Grotesk", sans-serif;
+      	margin: 0;
+      	background: #333;
+
+      }
+    .popup-section {
+        display: none;
+        /* or visibility: visible; */
+      }
+      .popup-section.show-popup {
+        display: block;
+        /* or visibility: visible; */
+      }
+      * {
+      	box-sizing: border-box;
+      }
+      /* ======== Header =================== */
+    input.user-email.form-field::placeholder{
+      color:#bbbbbb;
+    }
+
+    .radio-btn{
+      display:flex;
+      flex-direction: column;
+      margin-bottom:10px;
+    }
+      header.popup-header{
+      	z-index: 99;
+      	position: relative;
+      	background: transparent;
+      	padding-top: 10px;
+      	padding-bottom: 10px;
+      }
+      .header-container {
+      	max-width: 1220px;
+      	padding-right: 15px;
+      	padding-left: 15px;
+      	margin-right: auto;
+      	margin-left: auto;
+      	height: 100%;
+      }
+      .header-row {
+      	display: flex;
+      	flex-wrap: wrap;
+      	align-items: center;
+      	justify-content: space-between;
+      }
+      .header-column a{
+      	text-decoration: none;
+      	color: #fff;
+      	font-size: 24px;
+      	font-weight: bold;
+      	line-height: normal;
+      }
+      .header-column .open-popup--btn{
+      	width: 100%;
+      	background-color: #fff;
+      	color: #282725;
+      	text-decoration: none;
+      	font-size: 18px;
+      	padding: 20px 32px 20px;
+      	border-radius: 4px;
+      	font-family: "Bebas Neue", sans-serif;
+      	display: block;
+      	column-gap: 10px;
+      	overflow: hidden;
+      	-webkit-transition: all .3s ease-in-out;
+      	transition: all .3s ease-in-out;
+      	text-align: center;
+      	cursor: pointer;
+      	border: none;
+      }
+      .header-column .open-popup--btn:hover{
+      	-webkit-box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      	box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      }
+      /* ======== Newsletter Popup ========= */
+      section.popup-section {
+      	background-size: cover !important;
+      	overflow: hidden;
+      	background-attachment: fixed !important;
+      	background-position: center center !important;
+      	padding-top: 20px;
+      	padding-bottom: 20px;
+      	height: 100%;
+      	width: 100%;
+      	position: fixed;
+      	top: 0;
+      	z-index: 99;
+      }
+      @keyframes fadeIn {
+      	from {
+      		opacity: 0;
+      	}
+      	to {
+      		opacity: 1;
+      	}
+      }
+      section.popup-section.hide-popup{
+      	animation: fadeOut 1s ease-out forwards;
+      }
+      /* Define the fade-out keyframes */
+      @keyframes fadeOut {
+      	from {
+      		opacity: 1;
+      	}
+      	to {
+      		opacity: 0;
+      		display: none;
+      	}
+      }
+      section.popup-section:before {
+      	content: '';
+      	overflow: hidden;
+      	position: fixed;
+      	left: 0;
+      	width: 100%;
+      	z-index: 1;
+      	opacity: .8;
+      	background: #383632;
+      	-webkit-transition: opacity .3s ease-out;
+      	transition: opacity .3s ease-out;
+      	height: 100%;
+      	top: 0;
+      }
+
+      section.popup-section .inner-container {
+      	max-width: 1220px;
+      	padding-right: 15px;
+      	padding-left: 15px;
+      	margin-right: auto;
+      	margin-left: auto;
+      	height: 100%;
+      }
+      section.popup-section .inner-container  .row {
+      	display: flex;
+      	justify-content: center;
+      	align-items: center;
+      	width: 100%;
+      	flex-wrap: wrap;
+      	height: 100%;
+      }
+      .popup-inner {
+      	background: #fff;
+      	z-index: 9;
+      	width: 100%;
+      	max-width: 80%;
+      	-webkit-box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+      	box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+      	animation: slideUp 1s ease-out;
+      }
+      @keyframes slideUp {
+      	from {
+      		opacity: 0;
+      		transform: translateY(100%);
+      	}
+      	to {
+      		opacity: 1;
+      		transform: translateY(0);
+      	}
+      }
+      .popup-inner--row {
+      	display: flex;
+      	flex-wrap: wrap;
+      	position: relative;
+      }
+      .popup-inner-column {
+      	flex: 0 0 auto;
+      	width: 50%;
+      }
+      .bg-cover{
+      	background-size: cover;
+      	background-position: center center;
+      	position: relative;
+      	background-repeat: no-repeat !important;
+      	overflow: hidden;
+      }
+      div.popup-form {
+      	padding: 15% 8%;
+      }
+      .form-header p.form-subheading {
+      	margin: 0;
+      	color: #d51f0f;
+      	font-weight: 600;
+      	text-transform: uppercase;
+      	line-height: normal;
+      	font-style: normal;
+      	font-size: 15px;
+      	margin-bottom: 15px;
+      }
+      .form-header h2.form-heading {
+      	text-transform: uppercase;
+      	color: #383632;
+      	margin-top: 0px;
+      	margin-bottom: 20px;
+      	font-family: "Bebas Neue", sans-serif;
+      	font-size: 3.438rem;
+      	line-height: 3.2rem;
+      }
+      .form-fields .form-field{
+      	width: 100%;
+      	color: #8d8987;
+      	max-width: 100%;
+      	resize: none;
+      	outline: 0;
+      	font-size: 16px;
+      	border: 1px solid #e4e4e4;
+      	padding: 20px 28px;
+      	margin-bottom: 15px;
+      	border-radius: 4px;
+      }
+      .form-fields .submit-btn{
+      	width: 100%;
+      	background-color: #282725;
+      	color: #ffffff;
+      	text-decoration: none;
+      	font-size: 18px;
+      	padding: 20px 32px 20px;
+      	border-radius: 4px;
+      	font-family: "Bebas Neue", sans-serif;
+      	display: block;
+      	column-gap: 10px;
+      	overflow: hidden;
+      	-webkit-transition: all .3s ease-in-out;
+      	transition: all .3s ease-in-out;
+      	text-align: center;
+      	cursor: pointer;
+      }
+      .form-fields .submit-btn:hover{
+      	-webkit-box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      	box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      	-webkit-transform: translate3d(0, -2px, 0);
+      	transform: translate3d(0, -2px, 0);
+      }
+      span.close-popup--btn {
+      	height: 40px;
+      	width: 40px;
+      	position: absolute;
+      	right: 20px;
+      	top: 20px;
+      	border-radius: 100%;
+      	display: flex;
+      	align-items: center;
+      	justify-content: center;
+      	font-size: 24px;
+      	cursor: pointer;
+      }
+      /* ======== Sticky Footer ========= */
+        .sticky-footer{
+             position: fixed;
+          width: 100%;
+              background: #333;
+          z-index: 99;
+          bottom: 0;
+        }
+      .sticky-footer .footer-row{
+            display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 10px;
+          padding-right: 15px;
+      }
+      .creditd a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+              font-size: 16px;
+      }
+      .social ul{
+            display: flex;
+          list-style-type: none;
+          margin: 0;
+          padding: 0px;
+          column-gap: 10px;
+          align-items: center;
+      }
+      .social ul li a{
+           display: flex;
+          background: #fff;
+          height: 30px;
+          width: 30px;
+          border-radius: 4px;
+          align-items: center;
+          justify-content: center;
+      }
+      .social ul li a img{
+             max-width: 20px;
+      }
+
+      /* RESPONSIVE IPAD  */
+      @media only screen and (max-width: 981px) {
+      .popup-inner-column {
+          flex: 0 0 auto;
+          width: 100%;
+      }
+      .bg-cover{
+      	    height: 400px;
+      }
+      div.popup-form {
+          padding: 8% 5%;
+      }
+      span.close-popup--btn{
+      	    right: 10px;
+          top: 10px;
+      }
+      }
+
+      /* RESPONSIVE Iphone */
+      @media only screen and (max-width: 480px) {
+      .popup-inner{
+      	max-width: 100%;
+      }
+      .bg-cover {
+              height: 300px;
+          }
+          .form-header h2.form-heading{
+          	font-size: 2.438rem;
+          line-height: 2.4rem;
+          }
+          .header-column a{
+          	font-size: 20px;
+          }
+      }
+  </style>
+  <script></script>
+  {% schema %}
+  {
+    "name": "popup",
+    "settings": [
+
+    ],
+    "presets": [
+      {
+        "name": "popup"
+
+      }
+    ]
+  }
+  {% endschema %}
+{% endcomment %}
+<!-- final -->
+<script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+{% form 'customer', class: 'signup-form' %}
+  <main class="popup-container">
+    <section id="newsletter-popup" class="popup-section" style="background-image: url({{ '0097.jpg' | asset_url }});">
+      <div class="inner-container">
+        <div class="row">
+          <div class="popup-inner">
+            <div class="popup-inner--row">
+              <div
+                class="popup-inner-column bg-cover"
+                style="background-image: url({{ '0097.jpg' | asset_url }});"
+              ></div>
+              <div id="popup-container" class="popup-inner-column">
+                <div id="popup-form" class="popup-form">
+                  <div class="form-header">
+                    <h4 class="form-subheading">UNLOCK</h4>
+                    <h2 class="form-heading">15% OFF</h2>
+                    <div>
+                      <p>YOUR ORDER</p>
+                      <p>FULL PRICE ITEMS ONLY</p>
+                    </div>
+                  </div>
+                  <form
+                    id="email-signup-form"
+                    action="/contact#contact_form"
+                    method="POST"
+                    onsubmit="handleFormSubmit(event)"
+                  >
+                    <div class="radio-btn">
+                      <h6>What are you interested in?</h6>
+                      <label><input type="radio" name="gender" value="men"> Men</label>
+                      <label><input type="radio" name="gender" value="women"> Women</label>
+                      <label><input type="radio" name="gender" value="both"> Both</label>
+                    </div>
+                    <div class="form-fields">
+                      {% render 'email-signup-form5' %}
+                      <button id="continue-btn" type="submit" class="submit-btn">CONTINUE</button>
+                    </div>
+                  </form>
+                </div>
+                <div id="thank-you-message" class="hidden">
+                  <p>Thank you for subscribing!</p>
+                </div>
+                <span title="Close" class="close-popup--btn" style="color:black;"
+                  ><i class="fa-solid fa-xmark"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endform %}
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+      .popup-container{
+      	font-size: 17px;
+      	line-height: 30px;
+      	font-weight: 400;
+      	-moz-osx-font-smoothing: grayscale;
+      	word-break: break-word;
+      	-webkit-font-smoothing: antialiased;
+      	font-family: "Schibsted Grotesk", sans-serif;
+      	margin: 0;
+      	background: #333;
+
+      }
+    .hidden {
+    display: none;
+  }
+    .popup-section {
+        display: none;
+        /* or visibility: visible; */
+      }
+      .popup-section.show-popup {
+        display: block;
+        /* or visibility: visible; */
+      }
+      * {
+      	box-sizing: border-box;
+      }
+      /* ======== Header =================== */
+    input.user-email.form-field::placeholder{
+      color:#bbbbbb;
+    }
+
+    .radio-btn{
+      display:flex;
+      flex-direction: column;
+      margin-bottom:10px;
+    }
+      header.popup-header{
+      	z-index: 99;
+      	position: relative;
+      	background: transparent;
+      	padding-top: 10px;
+      	padding-bottom: 10px;
+      }
+      .header-container {
+      	max-width: 1220px;
+      	padding-right: 15px;
+      	padding-left: 15px;
+      	margin-right: auto;
+      	margin-left: auto;
+      	height: 100%;
+      }
+      .header-row {
+      	display: flex;
+      	flex-wrap: wrap;
+      	align-items: center;
+      	justify-content: space-between;
+      }
+      .header-column a{
+      	text-decoration: none;
+      	color: #fff;
+      	font-size: 24px;
+      	font-weight: bold;
+      	line-height: normal;
+      }
+      .header-column .open-popup--btn{
+      	width: 100%;
+      	background-color: #fff;
+      	color: #282725;
+      	text-decoration: none;
+      	font-size: 18px;
+      	padding: 20px 32px 20px;
+      	border-radius: 4px;
+      	font-family: "Bebas Neue", sans-serif;
+      	display: block;
+      	column-gap: 10px;
+      	overflow: hidden;
+      	-webkit-transition: all .3s ease-in-out;
+      	transition: all .3s ease-in-out;
+      	text-align: center;
+      	cursor: pointer;
+      	border: none;
+      }
+      .header-column .open-popup--btn:hover{
+      	-webkit-box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      	box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      }
+      /* ======== Newsletter Popup ========= */
+      section.popup-section {
+      	background-size: cover !important;
+      	overflow: hidden;
+      	background-attachment: fixed !important;
+      	background-position: center center !important;
+      	padding-top: 20px;
+      	padding-bottom: 20px;
+      	height: 100%;
+      	width: 100%;
+      	position: fixed;
+      	top: 0;
+      	z-index: 99;
+      }
+      @keyframes fadeIn {
+      	from {
+      		opacity: 0;
+      	}
+      	to {
+      		opacity: 1;
+      	}
+      }
+      section.popup-section.hide-popup{
+      	animation: fadeOut 1s ease-out forwards;
+      }
+      /* Define the fade-out keyframes */
+      @keyframes fadeOut {
+      	from {
+      		opacity: 1;
+      	}
+      	to {
+      		opacity: 0;
+      		display: none;
+      	}
+      }
+      section.popup-section:before {
+      	content: '';
+      	overflow: hidden;
+      	position: fixed;
+      	left: 0;
+      	width: 100%;
+      	z-index: 1;
+      	opacity: .8;
+      	background: #383632;
+      	-webkit-transition: opacity .3s ease-out;
+      	transition: opacity .3s ease-out;
+      	height: 100%;
+      	top: 0;
+      }
+
+      section.popup-section .inner-container {
+      	max-width: 1220px;
+      	padding-right: 15px;
+      	padding-left: 15px;
+      	margin-right: auto;
+      	margin-left: auto;
+      	height: 100%;
+      }
+      section.popup-section .inner-container  .row {
+      	display: flex;
+      	justify-content: center;
+      	align-items: center;
+      	width: 100%;
+      	flex-wrap: wrap;
+      	height: 100%;
+      }
+      .popup-inner {
+      	background: #fff;
+      	z-index: 9;
+      	width: 100%;
+      	max-width: 80%;
+      	-webkit-box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+      	box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+      	animation: slideUp 1s ease-out;
+      }
+      @keyframes slideUp {
+      	from {
+      		opacity: 0;
+      		transform: translateY(100%);
+      	}
+      	to {
+      		opacity: 1;
+      		transform: translateY(0);
+      	}
+      }
+      .popup-inner--row {
+      	display: flex;
+      	flex-wrap: wrap;
+      	position: relative;
+      }
+      .popup-inner-column {
+      	flex: 0 0 auto;
+      	width: 50%;
+      }
+      .bg-cover{
+      	background-size: cover;
+      	background-position: center center;
+      	position: relative;
+      	background-repeat: no-repeat !important;
+      	overflow: hidden;
+      }
+      div.popup-form {
+      	padding: 15% 8%;
+      }
+      .form-header p.form-subheading {
+      	margin: 0;
+      	color: #d51f0f;
+      	font-weight: 600;
+      	text-transform: uppercase;
+      	line-height: normal;
+      	font-style: normal;
+      	font-size: 15px;
+      	margin-bottom: 15px;
+      }
+      .form-header h2.form-heading {
+      	text-transform: uppercase;
+      	color: #383632;
+      	margin-top: 0px;
+      	margin-bottom: 20px;
+      	font-family: "Bebas Neue", sans-serif;
+      	font-size: 3.438rem;
+      	line-height: 3.2rem;
+      }
+      .form-fields .form-field{
+      	width: 100%;
+      	color: #8d8987;
+      	max-width: 100%;
+      	resize: none;
+      	outline: 0;
+      	font-size: 16px;
+      	border: 1px solid #e4e4e4;
+      	padding: 20px 28px;
+      	margin-bottom: 15px;
+      	border-radius: 4px;
+      }
+      .form-fields .submit-btn{
+      	width: 100%;
+      	background-color: #282725;
+      	color: #ffffff;
+      	text-decoration: none;
+      	font-size: 18px;
+      	padding: 20px 32px 20px;
+      	border-radius: 4px;
+      	font-family: "Bebas Neue", sans-serif;
+      	display: block;
+      	column-gap: 10px;
+      	overflow: hidden;
+      	-webkit-transition: all .3s ease-in-out;
+      	transition: all .3s ease-in-out;
+      	text-align: center;
+      	cursor: pointer;
+      }
+      .form-fields .submit-btn:hover{
+      	-webkit-box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      	box-shadow: 0 8px 30px 0 rgba(0, 0, 0, .15);
+      	-webkit-transform: translate3d(0, -2px, 0);
+      	transform: translate3d(0, -2px, 0);
+      }
+      span.close-popup--btn {
+      	height: 40px;
+      	width: 40px;
+      	position: absolute;
+      	right: 20px;
+      	top: 20px;
+      	border-radius: 100%;
+      	display: flex;
+      	align-items: center;
+      	justify-content: center;
+      	font-size: 24px;
+      	cursor: pointer;
+      }
+      /* ======== Sticky Footer ========= */
+        .sticky-footer{
+             position: fixed;
+          width: 100%;
+              background: #333;
+          z-index: 99;
+          bottom: 0;
+        }
+      .sticky-footer .footer-row{
+            display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 10px;
+          padding-right: 15px;
+      }
+      .creditd a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+              font-size: 16px;
+      }
+      .social ul{
+            display: flex;
+          list-style-type: none;
+          margin: 0;
+          padding: 0px;
+          column-gap: 10px;
+          align-items: center;
+      }
+      .social ul li a{
+           display: flex;
+          background: #fff;
+          height: 30px;
+          width: 30px;
+          border-radius: 4px;
+          align-items: center;
+          justify-content: center;
+      }
+      .social ul li a img{
+             max-width: 20px;
+      }
+
+      /* RESPONSIVE IPAD  */
+      @media only screen and (max-width: 981px) {
+      .popup-inner-column {
+          flex: 0 0 auto;
+          width: 100%;
+      }
+      .bg-cover{
+      	    height: 400px;
+      }
+      div.popup-form {
+          padding: 8% 5%;
+      }
+      span.close-popup--btn{
+      	    right: 10px;
+          top: 10px;
+      }
+      }
+
+      /* RESPONSIVE Iphone */
+      @media only screen and (max-width: 480px) {
+      .popup-inner{
+      	max-width: 100%;
+      }
+      .bg-cover {
+              height: 300px;
+          }
+          .form-header h2.form-heading{
+          	font-size: 2.438rem;
+          line-height: 2.4rem;
+          }
+          .header-column a{
+          	font-size: 20px;
+          }
+      }
+</style>
+<script></script>
+{% schema %}
+{
+  "name": "popup",
+  "settings": [
+
+  ],
+  "presets": [
+    {
+      "name": "popup"
+
+    }
+  ]
+}
+{% endschema %}
