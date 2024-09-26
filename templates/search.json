@@ -1,1 +1,42 @@
-{"sections":{"main-collection-banner":{"type":"main-collection-banner","settings":{"show_collection_image":true,"show_collection_description":true,"show_subcollections":true,"make_heading_uppercase":false,"overlay_color":"#000000","overlay_opacity":20}},"main-search":{"type":"main-search","disabled":true,"settings":{"full_width":true,"products_per_page":12,"columns_desktop":4,"pagination_type":"paginated","enable_filtering":true,"enable_sorting":true,"show_counts":true,"filter_color_swatches":true,"facets_desktop":"drawer","image_ratio":"square","show_date":true,"show_excerpt":false}},"e80bb651-d625-4db2-97e2-91a1403c2157":{"type":"apps","blocks":{"3fc60738-5d73-4868-8632-d9c3d1ee32a2":{"type":"shopify:\/\/apps\/boost-ai-search-discovery\/blocks\/filter-product-list-ssr\/7fc998ae-a150-4367-bab8-505d8a4503f7","settings":{}}},"block_order":["3fc60738-5d73-4868-8632-d9c3d1ee32a2"],"settings":{}}},"order":["main-collection-banner","main-search","e80bb651-d625-4db2-97e2-91a1403c2157"]}
+{
+  "sections": {
+    "main-collection-banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_collection_image": true,
+        "show_collection_description": true,
+        "show_subcollections": true,
+        "make_heading_uppercase": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 20
+      }
+    },
+    "main-search": {
+      "type": "main-search",
+      "settings": {
+        "full_width": true,
+        "products_per_page": 12,
+        "columns_desktop": 4,
+        "pagination_type": "paginated",
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "show_counts": true,
+        "filter_color_swatches": true,
+        "facets_desktop": "drawer",
+        "image_ratio": "square",
+        "show_date": true,
+        "show_excerpt": false
+      }
+    },
+    "e80bb651-d625-4db2-97e2-91a1403c2157": {
+      "type": "apps",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main-collection-banner",
+    "main-search",
+    "e80bb651-d625-4db2-97e2-91a1403c2157"
+  ]
+}

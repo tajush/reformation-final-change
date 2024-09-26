@@ -4,7 +4,7 @@
   assign show_excerpt = section.settings.show_excerpt
   assign image_ratio = section.settings.image_ratio
 %}
-{%- paginate blog.articles by 8 -%}
+{%- paginate blog.articles by 50 -%}
   <div class="section-spacing-bottom">
     <div class="row">
       {%- for article in blog.articles -%}

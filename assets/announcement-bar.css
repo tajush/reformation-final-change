@@ -18,10 +18,14 @@
   z-index: 49; }
 
 .announcement-bar {
-  background: var(--color-announcement-bar-bg, var(--color-accent));
-  color: var(--color-announcement-bar-text, #fff);
+  position:fixed;
+  margin-top: 59px;
+      background-color:white;
+  color:black;
+  /* background: var(--color-announcement-bar-bg, var(--color-accent)); */
+  /* color: var(--color-announcement-bar-text, #fff); */
   line-height: 1;
-  padding: 14px 0; }
+  padding: 9px 0; }
   .announcement-bar--inner {
     height: 100%;
     display: flex;

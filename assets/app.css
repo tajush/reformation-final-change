@@ -3985,3 +3985,8 @@ input[type="radio"], .field label, .custom-checkbox[type="checkbox"], .custom-ch
 .product-popup-modal__content-info {
         padding: 0px !important;
     }
+/* custom css */
+/* .shopify-section.announcement-bar-section{
+  position: sticky;
+  top: 0;
+} */

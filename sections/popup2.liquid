@@ -422,26 +422,11 @@
                   <div class="form-header">
                     <div></div>
                   </div>
-                  <form
-                    id="email-signup-form"
-                    action="/contact#contact_form"
-                    method="POST"
-                    onsubmit="handleFormSubmit(event)"
-                  >
-                    <!--
-                      <div class="radio-btn">
-                        <h6>What are you interested in?</h6>
-                        <label><input type="radio" name="gender" value="men"> Men</label>
-                        <label><input type="radio" name="gender" value="women"> Women</label>
-                        <label><input type="radio" name="gender" value="both"> Both</label>
-                      </div>
-                    -->
-                    <!--
-                      <div class="form-fields">
-                        {% render 'email-signup-form5' %}
-                        <button id="continue-btn" type="submit" class="submit-btn">CONTINUE</button>
-                      </div>
-                    -->
+                  <form id="sms-subscribe-form">
+                    <label for="phone-number">Enter your phone number:</label>
+                    <input type="text" id="phone-number" name="phone-number" required>
+                    <button type="submit">Subscribe</button>
+                    <p id="response-message"></p>
                   </form>
                 </div>
                 <div id="thank-you-message" class="hidden">
